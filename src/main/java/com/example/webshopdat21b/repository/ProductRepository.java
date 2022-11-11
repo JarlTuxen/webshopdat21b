@@ -2,6 +2,7 @@ package com.example.webshopdat21b.repository;
 
 import com.example.webshopdat21b.model.Product;
 import com.example.webshopdat21b.utility.ConnectionManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
@@ -30,6 +31,14 @@ public class ProductRepository {
     //public ProductRepository(Environment env){
     //    environment = env;
     //}
+    @Value("${spring.datasource.url}")
+    private String db_url;
+
+    @Value("${spring.datasource.username}")
+    private String uid;
+
+    @Value("${spring.datasource.password}")
+    private String pwd;
 
     //extra constructor - vælges som default
     //public ProductRepository(){}
@@ -37,7 +46,8 @@ public class ProductRepository {
     public List<Product> getAll() {
         List<Product> productList = new ArrayList<>();
         //get connection from ConnectionManager
-        Connection connection = ConnectionManager.getConnection();
+
+        Connection connection = ConnectionManager.getConnectionByValue(db_url, uid, pwd);
         try {
 
             Statement s = connection.createStatement();
